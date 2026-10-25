@@ -6,6 +6,7 @@
   import "@fontsource/anton";
 
   import { onMount } from "svelte";
+  import { resolve } from "$app/paths";
   import GIF from "gif.js";
 
   let text = $state("");
@@ -35,7 +36,7 @@
       console.error("Failed to load /megumi.png");
     };
 
-    image.src = "/megumi.png";
+    image.src = resolve("/megumi.png");
   });
 
   function renderPotential() {
@@ -184,7 +185,7 @@
       quality: 10,
       width: canvas.width,
       height: canvas.height,
-      workerScript: "/gif.worker.js",
+      workerScript: resolve("gif.worker.js"),
     });
 
     // Repeat the frames so it doesnt glitch
@@ -213,6 +214,21 @@
 
 <header>
   <h1>POTENTIALLIFIER 9000</h1>
+
+  <a
+    class="github-link"
+    href="https://github.com/TrustedInstaller0/potentiallifier9000"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="View source code on GitHub"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+      <path
+        d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.55.1.76-.24.76-.54v-2.13c-3.1.67-3.76-1.32-3.76-1.32-.5-1.28-1.23-1.62-1.23-1.62-1.01-.69.08-.68.08-.68 1.12.08 1.7 1.15 1.7 1.15.99 1.7 2.6 1.21 3.23.93.1-.72.39-1.21.7-1.49-2.47-.28-5.07-1.23-5.07-5.48 0-1.21.43-2.2 1.14-2.97-.12-.28-.5-1.41.11-2.94 0 0 .93-.3 3.05 1.13a10.6 10.6 0 0 1 5.56 0c2.12-1.43 3.04-1.13 3.04-1.13.61 1.53.23 2.66.12 2.94.71.77 1.13 1.76 1.13 2.97 0 4.26-2.6 5.2-5.08 5.48.4.35.75 1.02.75 2.06v3.1c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"
+      />
+    </svg>
+    <span>GitHub</span>
+  </a>
 </header>
 
 <main>
@@ -282,16 +298,46 @@ POTENTIAL"
   }
 
   header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 32px 20px 8px;
-    text-align: center;
+    min-height: 88px;
   }
 
   h1 {
     margin: 0;
     font-family: "Inter", sans-serif;
-    font-size: clamp(36px, 4.5vw, 44px);
+    font-size: clamp(28px, 4.5vw, 44px);
     font-weight: 700;
     letter-spacing: -1px;
+    text-align: center;
+  }
+
+  .github-link {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #aab3ca;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    transition: color 150ms ease;
+  }
+
+  .github-link svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .github-link:hover {
+    color: #ffffff;
   }
 
   main {
@@ -395,7 +441,26 @@ POTENTIAL"
 
   @media (max-width: 650px) {
     header {
-      padding-top: 24px;
+      padding: 24px 16px 8px;
+      min-height: 76px;
+    }
+
+    h1 {
+      font-size: clamp(22px, 5vw, 32px);
+    }
+
+    .github-link {
+      right: 12px;
+      gap: 0;
+    }
+
+    .github-link span {
+      display: none;
+    }
+
+    .github-link svg {
+      width: 24px;
+      height: 24px;
     }
 
     main {
