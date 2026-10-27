@@ -7,6 +7,8 @@
 
   import { onMount } from "svelte";
   import { resolve } from "$app/paths";
+  import { analytics } from "#lib/firebase";
+  import { logEvent } from "firebase/analytics";
   import GIF from "gif.js";
 
   let text = $state("");
@@ -150,6 +152,7 @@
   function downloadPotential() {
     if (!canvas || !ready) return;
 
+    analyticsLogEvent("download_img");
     const link = document.createElement("a");
     link.download = "megumi-potential.png";
     link.href = canvas.toDataURL("image/png");
@@ -159,6 +162,7 @@
   async function copyPotential() {
     if (!canvas || !ready) return;
 
+    analyticsLogEvent("copy_img");
     try {
       const blob = await new Promise<Blob>((resolve, reject) => {
         canvas!.toBlob((result) => {
@@ -179,6 +183,7 @@
   function downloadGif() {
     if (!canvas || !ready) return;
 
+    analyticsLogEvent("download_gif");
     // DONT REMOVE gif.worker.js FROM STATIC OR THIS BREAKS
     const gif = new GIF({
       workers: 2,
@@ -205,6 +210,12 @@
     });
 
     gif.render();
+  }
+
+  function analyticsLogEvent(event: string) {
+    if (analytics) {
+      logEvent(analytics, event);
+    }
   }
 </script>
 
@@ -241,7 +252,8 @@
       bind:value={text}
       placeholder="DID YOU SAY
 POTENTIAL"
-      aria-label="Potential text"></textarea>
+      aria-label="Potential text"
+    ></textarea>
 
     <div class="buttons">
       <button
